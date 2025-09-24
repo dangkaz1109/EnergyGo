@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slepo - 4-4-4-4 Breathing</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+      gap: 10px;
+    }
+
+    #count {
+      font-size: 6rem;
+      color: #333;
+      margin: 0;
+    }
+
+    #state {
+      font-size: 1.5rem;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    button {padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      background-color: #00bf63;
+            color: white;
+      }
+    button:hover {
+  background-color: #00bf63;
+}
+  </style>
+</head>
+
+<body>
+  <h1 id="count">4</h1>
+  <h3 id="state">Hít vào</h3>
+  <a href="index.html">
+    <button>THOÁT</button>
+  </a>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const countElement = document.getElementById("count");
+    const stateElement = document.getElementById("state");
+
+    // Các giai đoạn: [trạng thái, thời gian (giây)]
+    const stages = [
+      { state: "Hít vào", duration: 4 },
+      { state: "Giữ hơi", duration: 4 },
+      { state: "Thở ra", duration: 4 },
+      { state: "Giữ hơi", duration: 4 }
+    ];
+
+    let currentStageIndex = 0;
+    let currentCount = stages[0].duration;
+    let cycleCount = 0; // đếm số chu kỳ hoàn chỉnh
+
+    // Cập nhật hiển thị ban đầu
+    countElement.textContent = currentCount;
+    stateElement.textContent = stages[0].state;
+
+    const timer = setInterval(() => {
+      currentCount--;
+      countElement.textContent = currentCount;
+      stateElement.textContent = stages[currentStageIndex].state;
+
+      if (currentCount <= 0) {
+        // Chuyển sang giai đoạn tiếp theo
+        currentStageIndex = (currentStageIndex + 1) % stages.length;
+        currentCount = stages[currentStageIndex].duration;
+
+        // Nếu quay lại giai đoạn đầu tiên => hoàn thành 1 chu kỳ
+        if (currentStageIndex === 0) {
+          cycleCount++;
+          if (cycleCount >= 4) { // đủ 4 chu kỳ
+            clearInterval(timer);
+            window.location.href = "index.html";
+          }
+        }
+      }
+    }, 1000);
+  });
+</script>
+</body>
+
+</html>
